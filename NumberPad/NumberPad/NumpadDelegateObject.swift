@@ -21,6 +21,9 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
     var textInTextField: String = ""
     var timerInAction = false
     
+    public var defaultSearchBarButtonClickClosure: (() -> ())? = nil
+    public var defaultSearchBarTextDidChangeClosure: ((_ searchText: String) -> ())? = nil
+    
     let multiTapLanguage = [
         "2"     : "A",
         "22"    : "B",
@@ -52,6 +55,17 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
     
     public var mode: TextFieldInputMode = TextFieldInputMode.normal
     
+    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if self.mode == .normal && self.defaultSearchBarButtonClickClosure != nil { // self.mode == .normal, cause .nummpad has no search button
+            self.defaultSearchBarButtonClickClosure!()
+        }
+    }
+    
+    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.textInTextField = searchText
+        self.defaultSearchBarTextDidChangeClosure?(searchText)
+    }
+    
     public func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
         switch(mode) {
@@ -60,30 +74,20 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
                 if timer != nil { timer.invalidate() }
                 accumulatedText = ""
                 timerInAction = false
-                textInTextField = ""
                 currentNumberBeingPressed = ""
                 return true
             
             case .multiTap:
                 if text.isEmpty { // handling deletion
-                    
                     currentNumberBeingPressed = ""
                     
-                    if !textInTextField.isEmpty {
-                        if !timerInAction {
-                            textInTextField.removeLast()
-                            searchBar.searchTextField.text = textInTextField
-                            return false
-                        } else {
-                            timer.invalidate()
-                            self.timerInAction = false
-                            self.accumulatedText = ""
-                            return true
-                        }
+                    if timerInAction {
+                        timer.invalidate()
+                        self.timerInAction = false
+                        self.accumulatedText = ""
                     }
                     
                     return true
-
                 } else {
 
                     if currentNumberBeingPressed != text {
@@ -100,13 +104,13 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
                     let keyPressObject = NumPadKeyPress(fromValue: currentNumberBeingPressed, fromTimesPressed: accumulatedText.count)
 
                     if let translatedAccumulatedText = multiTapLanguage[keyPressObject.toString()] {
-                        if let currentText = searchBar.searchTextField.text {
+                        if let currentText = searchBar.text {
                             
                             if currentText.isEmpty {
-                                searchBar.searchTextField.text = translatedAccumulatedText
+                                searchBar.text = translatedAccumulatedText
                             } else {
-                                if timerInAction { searchBar.searchTextField.text!.removeLast() }
-                                searchBar.searchTextField.text! += translatedAccumulatedText
+                                if timerInAction { searchBar.text!.removeLast() }
+                                searchBar.text! += translatedAccumulatedText
                             }
                                                 
                         }
@@ -130,7 +134,7 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
 
                                 if let translatedAccumulatedText = self.multiTapLanguage[keyPressObject.toString()] {
                                     self.textInTextField += translatedAccumulatedText
-                                    searchBar.searchTextField.text = self.textInTextField
+                                    self.searchBar(searchBar, textDidChange: self.textInTextField)
                                 }
                                 
                                 self.accumulatedText = ""

@@ -14,9 +14,10 @@ public class CustomSearchBar : UISearchBar {
     public override func awakeFromNib() {
         customDelegate = NumpadDelegateObject()
         self.delegate = customDelegate
+        print("CustomSearchBar initialized")
     }
     
-    func updateKeyboardType() {
+    public func updateKeyboardType() {
         switch(self.customDelegate.mode) {
         case .normal:
             self.keyboardType = .default
@@ -28,5 +29,18 @@ public class CustomSearchBar : UISearchBar {
     public func toggleInputMode() {
         self.customDelegate.toggleMode()
         self.updateKeyboardType()
+    }
+    
+    public func setDefaultSearchButtonClickedClosure(closure: @escaping () -> Void) {
+        if self.customDelegate.defaultSearchBarButtonClickClosure == nil {
+            self.customDelegate.defaultSearchBarButtonClickClosure = closure
+        }
+    }
+    
+    public func setDefaultSearchBarTextDidChangeClosure(closure: @escaping (_ searchText: String) -> ()) {
+        if self.customDelegate.defaultSearchBarTextDidChangeClosure == nil {
+            self.customDelegate.defaultSearchBarTextDidChangeClosure = closure
+        }
+        
     }
 }
