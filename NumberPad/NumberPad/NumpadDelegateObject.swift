@@ -20,6 +20,7 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
     var accumulatedText: String = ""
     var textInTextField: String = ""
     var timerInAction = false
+    var wasTextPasted = false
     
     public var defaultSearchBarButtonClickClosure: (() -> ())? = nil
     public var defaultSearchBarTextDidChangeClosure: ((_ searchText: String) -> ())? = nil
@@ -56,17 +57,29 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
     public var mode: TextFieldInputMode = TextFieldInputMode.normal
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if self.mode == .normal && self.defaultSearchBarButtonClickClosure != nil { // self.mode == .normal, cause .nummpad has no search button
-            self.defaultSearchBarButtonClickClosure!()
-        }
+        self.defaultSearchBarButtonClickClosure?()
     }
     
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.textInTextField = searchText
+        
+        if self.wasTextPasted {
+            self.searchBarSearchButtonClicked(searchBar)
+            self.wasTextPasted = false
+            return
+        }
+        
         self.defaultSearchBarTextDidChangeClosure?(searchText)
     }
     
     public func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        
+        if text.count > 1 && !self.wasTextPasted {
+            self.wasTextPasted = true
+            print("paste caught")
+            return true
+        }
         
         switch(mode) {
             
