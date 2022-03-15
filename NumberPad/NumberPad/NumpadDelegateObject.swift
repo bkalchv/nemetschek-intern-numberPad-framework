@@ -10,11 +10,11 @@ import UIKit
 
 public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
     
-    public enum TextFieldInputMode {
+    public enum SearchBarInputMode {
         case normal
         case multiTap
     }
-    
+        
     var timer: Timer!
     var currentNumberBeingPressed: String = ""
     var accumulatedText: String = ""
@@ -22,39 +22,18 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
     var timerInAction = false
     var wasTextPastedInSearchBar = false
     
-    public var defaultSearchBarButtonClickClosure: (() -> ())? = nil
-    public var defaultSearchBarTextDidChangeClosure: ((_ searchText: String) -> ())? = nil
+    var defaultSearchBarButtonClickClosure: (() -> ())? = nil
+    var defaultSearchBarTextDidChangeClosure: ((_ searchText: String) -> ())? = nil
     
-    let multiTapLanguage = [
-        "2"     : "A",
-        "22"    : "B",
-        "222"   : "C",
-        "3"     : "D",
-        "33"    : "E",
-        "333"   : "F",
-        "4"     : "G",
-        "44"    : "H",
-        "444"   : "I",
-        "5"     : "J",
-        "55"    : "K",
-        "555"   : "L",
-        "6"     : "M",
-        "66"    : "N",
-        "666"   : "O",
-        "7"     : "P",
-        "77"    : "Q",
-        "777"   : "R",
-        "7777"  : "S",
-        "8"     : "T",
-        "88"    : "U",
-        "888"   : "V",
-        "9"     : "W",
-        "99"    : "X",
-        "999"   : "Y",
-        "9999"  : "Z"
-    ]
+    // update multitapCurrentLanguage on Language Change
+    var currentMultiTapLanguage: [String:String]? = nil
     
-    public var mode: TextFieldInputMode = TextFieldInputMode.normal
+    public var mode: SearchBarInputMode = SearchBarInputMode.normal
+    public var multitapLanguage: MultiTapLanguageMode = MultiTapLanguageMode.english
+    
+    public func setCurrentMultitapLanguage(multitapLanguageDictionary: [String:String]) {
+        currentMultiTapLanguage = multitapLanguageDictionary
+    }
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.defaultSearchBarButtonClickClosure?()
@@ -114,9 +93,9 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
                     accumulatedText += text
                     print(accumulatedText)
                     
-                    let keyPressObject = NumPadKeyPress(fromValue: currentNumberBeingPressed, fromTimesPressed: accumulatedText.count)
+                    let keyPressObject = NumPadKeyPress(fromValue: currentNumberBeingPressed, fromTimesPressed: accumulatedText.count, forMultitapLanguageMode: multitapLanguage)
 
-                    if let translatedAccumulatedText = multiTapLanguage[keyPressObject.toString()] {
+                    if let currentMultiTapLanguage = currentMultiTapLanguage, let translatedAccumulatedText = currentMultiTapLanguage[keyPressObject.toString()] {
                         if let currentText = searchBar.text {
                             
                             if currentText.isEmpty {
@@ -143,9 +122,9 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
                                 print(self.accumulatedText)
 
                                 // create NumPadKeyPress
-                                let keyPressObject = NumPadKeyPress(fromValue: self.currentNumberBeingPressed, fromTimesPressed: self.accumulatedText.count)
+                                    let keyPressObject = NumPadKeyPress(fromValue: self.currentNumberBeingPressed, fromTimesPressed: self.accumulatedText.count, forMultitapLanguageMode: self.multitapLanguage)
 
-                                if let translatedAccumulatedText = self.multiTapLanguage[keyPressObject.toString()] {
+                                    if let currentMultiTapLanguage = self.currentMultiTapLanguage, let translatedAccumulatedText = currentMultiTapLanguage[keyPressObject.toString()] {
                                     self.textInTextField += translatedAccumulatedText
                                     self.searchBar(searchBar, textDidChange: self.textInTextField)
                                 }
@@ -167,6 +146,15 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
                 mode = .multiTap
             case .multiTap:
                 mode = .normal
+        }
+    }
+    
+    public func toggleMultitapLanguage() {
+        switch multitapLanguage {
+            case .english:
+                multitapLanguage = .bulgarian
+            case .bulgarian:
+                multitapLanguage = .english
         }
     }
 }

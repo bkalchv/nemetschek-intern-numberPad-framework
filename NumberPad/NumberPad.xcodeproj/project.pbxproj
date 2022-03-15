@@ -20,6 +20,7 @@
 		42C0A97427C5336500D6902D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C0A96227C5160500D6902D /* ViewController.swift */; };
 		42C0F9B727CE7505009B4B68 /* NumpadDelegateObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C0F9B627CE7505009B4B68 /* NumpadDelegateObject.swift */; };
 		42C0F9B827CE7505009B4B68 /* NumpadDelegateObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C0F9B627CE7505009B4B68 /* NumpadDelegateObject.swift */; };
+		42C4741727E0D95200889320 /* MultitapLanguageMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C4741627E0D95200889320 /* MultitapLanguageMode.swift */; };
 		42CF2A1A27C7D8A200050515 /* NumPadKeyPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF2A1927C7D8A200050515 /* NumPadKeyPress.swift */; };
 		42CF2A1B27C7EA6300050515 /* NumPadKeyPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF2A1927C7D8A200050515 /* NumPadKeyPress.swift */; };
 		42D16DA827CFB1AD00913280 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D16DA727CFB1AD00913280 /* CustomSearchBar.swift */; };
@@ -53,6 +54,7 @@
 		42C0A96A27C5160600D6902D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		42C0A96C27C5160600D6902D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		42C0F9B627CE7505009B4B68 /* NumpadDelegateObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadDelegateObject.swift; sourceTree = "<group>"; };
+		42C4741627E0D95200889320 /* MultitapLanguageMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultitapLanguageMode.swift; sourceTree = "<group>"; };
 		42CF2A1927C7D8A200050515 /* NumPadKeyPress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumPadKeyPress.swift; sourceTree = "<group>"; };
 		42D16DA727CFB1AD00913280 /* CustomSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
 		42D16DA927CFB4A000913280 /* CustomSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				42BE341D27C3DC67003A07EF /* NumberPad.h */,
+				42C4741627E0D95200889320 /* MultitapLanguageMode.swift */,
 				42CF2A1927C7D8A200050515 /* NumPadKeyPress.swift */,
 				42C0F9B627CE7505009B4B68 /* NumpadDelegateObject.swift */,
 				42D16DA727CFB1AD00913280 /* CustomSearchBar.swift */,
@@ -282,6 +285,7 @@
 				42C0F9B727CE7505009B4B68 /* NumpadDelegateObject.swift in Sources */,
 				42C0A97427C5336500D6902D /* ViewController.swift in Sources */,
 				42D16DAA27CFB4A000913280 /* CustomSearchController.swift in Sources */,
+				42C4741727E0D95200889320 /* MultitapLanguageMode.swift in Sources */,
 				42D16DA827CFB1AD00913280 /* CustomSearchBar.swift in Sources */,
 				42BE341F27C3DC67003A07EF /* NumberPad.docc in Sources */,
 				42CF2A1A27C7D8A200050515 /* NumPadKeyPress.swift in Sources */,
