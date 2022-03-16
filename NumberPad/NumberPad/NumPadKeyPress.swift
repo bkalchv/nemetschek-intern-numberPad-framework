@@ -11,7 +11,8 @@ class NumPadKeyPress {
     var languageMode : MultiTapLanguageMode = MultiTapLanguageMode.english
     
     let numberToMaximumPressesEnglish = [
-        "1" : 3,
+        "0" : 1,
+        "1" : 4,
         "2" : 3,
         "3" : 3,
         "4" : 3,
@@ -23,6 +24,7 @@ class NumPadKeyPress {
     ]
     
     let numberToMaximumPressesBulgarian = [
+        "0" : 1,
         "1" : 4,
         "2" : 4,
         "3" : 4,

@@ -12,6 +12,11 @@ public class CustomSearchBar : UISearchBar {
     private var customDelegate: NumpadDelegateObject!
     
     private let multiTapLanguageEnglish = [
+        "0"     : " ",
+        "1"     : "-",
+        "11"    : ".",
+        "111"   : ",",
+        "1111"  : "!",
         "2"     : "A",
         "22"    : "B",
         "222"   : "C",
@@ -41,6 +46,11 @@ public class CustomSearchBar : UISearchBar {
     ]
     
     private let multiTapLanguageBulgarian = [
+        "0"     : " ",
+        "1"     : "-",
+        "11"    : ".",
+        "111"   : ",",
+        "1111"  : "!",
         "2"     : "А",
         "22"    : "Б",
         "222"   : "В",
