@@ -110,16 +110,7 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
         super.init()
         self.setCurrentMultitapLanguage(multitapLanguageDictionary: NumpadDelegateObject.multitapLanguageEnglish)
     }
-    
-    public func updateMultitapLanguage() {
-        switch self.multitapLanguage {
-        case .english:
-            self.setCurrentMultitapLanguage(multitapLanguageDictionary: NumpadDelegateObject.multitapLanguageEnglish)
-        case .bulgarian:
-            self.setCurrentMultitapLanguage(multitapLanguageDictionary: NumpadDelegateObject.multitapLanguageBulgarian)
-        }
-    }
-    
+
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.defaultSearchBarButtonClickClosure?()
     }
@@ -165,7 +156,7 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
                     
                     return true
                 } else {
-
+                    
                     if currentNumberBeingPressed != text {
                         if currentNumberBeingPressed != "" { timer.fire() }
                         currentNumberBeingPressed = text
@@ -211,7 +202,7 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
                                     if let currentMultiTapLanguage = self.currentMultitapLanguageDictionary, let translatedAccumulatedText = currentMultiTapLanguage[keyPressObject.toString()] {
                                     self.textInTextField += translatedAccumulatedText
                                     self.searchBar(searchBar, textDidChange: self.textInTextField)
-                                }
+                                    }
                                 
                                 self.accumulatedText = ""
                                 })
@@ -239,6 +230,15 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
                 multitapLanguage = .bulgarian
             case .bulgarian:
                 multitapLanguage = .english
+        }
+    }
+    
+    public func updateMultitapLanguage() {
+        switch self.multitapLanguage {
+        case .english:
+            self.setCurrentMultitapLanguage(multitapLanguageDictionary: NumpadDelegateObject.multitapLanguageEnglish)
+        case .bulgarian:
+            self.setCurrentMultitapLanguage(multitapLanguageDictionary: NumpadDelegateObject.multitapLanguageBulgarian)
         }
     }
 }
