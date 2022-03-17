@@ -14,6 +14,80 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
         case normal
         case multiTap
     }
+    
+    static let multitapLanguageEnglish = [
+        "0"     : " ",
+        "1"     : "-",
+        "11"    : ".",
+        "111"   : ",",
+        "1111"  : "!",
+        "2"     : "A",
+        "22"    : "B",
+        "222"   : "C",
+        "3"     : "D",
+        "33"    : "E",
+        "333"   : "F",
+        "4"     : "G",
+        "44"    : "H",
+        "444"   : "I",
+        "5"     : "J",
+        "55"    : "K",
+        "555"   : "L",
+        "6"     : "M",
+        "66"    : "N",
+        "666"   : "O",
+        "7"     : "P",
+        "77"    : "Q",
+        "777"   : "R",
+        "7777"  : "S",
+        "8"     : "T",
+        "88"    : "U",
+        "888"   : "V",
+        "9"     : "W",
+        "99"    : "X",
+        "999"   : "Y",
+        "9999"  : "Z"
+    ]
+    
+    static let multitapLanguageBulgarian = [
+        "0"     : " ",
+        "1"     : "-",
+        "11"    : ".",
+        "111"   : ",",
+        "1111"  : "!",
+        "2"     : "А",
+        "22"    : "Б",
+        "222"   : "В",
+        "2222"  : "Г",
+        "3"     : "Д",
+        "33"    : "Е",
+        "333"   : "Ж",
+        "3333"  : "З",
+        "4"     : "И",
+        "44"    : "Й",
+        "444"   : "К",
+        "4444"  : "Л",
+        "5"     : "М",
+        "55"    : "Н",
+        "555"   : "О",
+        "5555"  : "П",
+        "6"     : "Р",
+        "66"    : "С",
+        "666"   : "Т",
+        "6666"  : "У",
+        "7"     : "Ф",
+        "77"    : "Х",
+        "777"   : "Ц",
+        "7777"  : "Ч",
+        "8"     : "Ш",
+        "88"    : "Щ",
+        "888"   : "Ъ",
+        "8888"  : "ь",
+        "9"     : "Ь",
+        "99"    : "Э",
+        "999"   : "Ю",
+        "9999"  : "Я"
+    ]
         
     var timer: Timer!
     var currentNumberBeingPressed: String = ""
@@ -21,18 +95,29 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
     var textInTextField: String = ""
     var timerInAction = false
     var wasTextPastedInSearchBar = false
+    var currentMultitapLanguageDictionary: [String:String]? = nil
+    public var mode: SearchBarInputMode = SearchBarInputMode.normal
+    public var multitapLanguage: MultiTapLanguageMode = MultiTapLanguageMode.english
     
     var defaultSearchBarButtonClickClosure: (() -> ())? = nil
     var defaultSearchBarTextDidChangeClosure: ((_ searchText: String) -> ())? = nil
     
-    // update multitapCurrentLanguage on Language Change
-    var currentMultiTapLanguage: [String:String]? = nil
-    
-    public var mode: SearchBarInputMode = SearchBarInputMode.normal
-    public var multitapLanguage: MultiTapLanguageMode = MultiTapLanguageMode.english
-    
     public func setCurrentMultitapLanguage(multitapLanguageDictionary: [String:String]) {
-        currentMultiTapLanguage = multitapLanguageDictionary
+        currentMultitapLanguageDictionary = multitapLanguageDictionary
+    }
+    
+    init(withMultitapLanguageDictionary multitapLanguageDictionary: [String:String]) {
+        super.init()
+        self.setCurrentMultitapLanguage(multitapLanguageDictionary: NumpadDelegateObject.multitapLanguageEnglish)
+    }
+    
+    public func updateMultitapLanguage() {
+        switch self.multitapLanguage {
+        case .english:
+            self.setCurrentMultitapLanguage(multitapLanguageDictionary: NumpadDelegateObject.multitapLanguageEnglish)
+        case .bulgarian:
+            self.setCurrentMultitapLanguage(multitapLanguageDictionary: NumpadDelegateObject.multitapLanguageBulgarian)
+        }
     }
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -52,8 +137,7 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
     }
     
     public func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        
-        
+    
         if text.count > 1 && !self.wasTextPastedInSearchBar {
             self.wasTextPastedInSearchBar = true
             print("paste caught")
@@ -95,7 +179,7 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
                     
                     let keyPressObject = NumPadKeyPress(fromValue: currentNumberBeingPressed, fromTimesPressed: accumulatedText.count, forMultitapLanguageMode: multitapLanguage)
 
-                    if let currentMultiTapLanguage = currentMultiTapLanguage, let translatedAccumulatedText = currentMultiTapLanguage[keyPressObject.toString()] {
+                    if let currentMultiTapLanguage = currentMultitapLanguageDictionary, let translatedAccumulatedText = currentMultiTapLanguage[keyPressObject.toString()] {
                         if let currentText = searchBar.text {
                             
                             if currentText.isEmpty {
@@ -124,7 +208,7 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
                                 // create NumPadKeyPress
                                     let keyPressObject = NumPadKeyPress(fromValue: self.currentNumberBeingPressed, fromTimesPressed: self.accumulatedText.count, forMultitapLanguageMode: self.multitapLanguage)
 
-                                    if let currentMultiTapLanguage = self.currentMultiTapLanguage, let translatedAccumulatedText = currentMultiTapLanguage[keyPressObject.toString()] {
+                                    if let currentMultiTapLanguage = self.currentMultitapLanguageDictionary, let translatedAccumulatedText = currentMultiTapLanguage[keyPressObject.toString()] {
                                     self.textInTextField += translatedAccumulatedText
                                     self.searchBar(searchBar, textDidChange: self.textInTextField)
                                 }
