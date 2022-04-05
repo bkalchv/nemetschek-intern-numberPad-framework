@@ -136,7 +136,7 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
         }
         
         switch(mode) {
-            
+            // TODO: Add mode .t9PredictiveText
             case .normal:
                 if timer != nil { timer.invalidate() }
                 accumulatedText = ""

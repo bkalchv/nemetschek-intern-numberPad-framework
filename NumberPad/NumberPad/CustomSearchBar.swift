@@ -14,7 +14,7 @@ public class CustomSearchBar : UISearchBar {
     public override func awakeFromNib() {
         customDelegate = NumpadDelegateObject(withMultitapLanguageDictionary: NumpadDelegateObject.multitapLanguageEnglish)
         self.delegate = customDelegate
-        print("CustomSearchBar initialized")
+        //print("CustomSearchBar initialized")
     }
     
     public func updateKeyboardType() {
@@ -46,6 +46,9 @@ public class CustomSearchBar : UISearchBar {
         if self.customDelegate.defaultSearchBarTextDidChangeClosure == nil {
             self.customDelegate.defaultSearchBarTextDidChangeClosure = closure
         }
+    }
         
+    public func executeDefaultSearchButtonClickedClosure() {
+        self.customDelegate.searchBarSearchButtonClicked(self)
     }
 }
