@@ -97,9 +97,7 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
     var timerInAction = false
     var wasTextPastedInSearchBar = false
     var currentMultitapLanguageDictionary: [String:String]? = nil
-//    public var mode: SearchBarInputMode = SearchBarInputMode.normal
-    // TODO: Bring back to normal
-    public var mode: SearchBarInputMode = SearchBarInputMode.t9PredictiveTexting
+    public var mode: SearchBarInputMode = SearchBarInputMode.normal
     public var multitapLanguage: MultiTapLanguageMode = MultiTapLanguageMode.english
     
     var defaultSearchBarButtonClickClosure: (() -> ())? = nil

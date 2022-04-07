@@ -186,9 +186,9 @@ public class T9Trie : Codable {
             } else if digits.contains(charUnicode) {
                 t9String.append(String(charUnicode))
             } else if whitespaces.contains(charUnicode) {
-                t9String += " "
-            } else if charUnicode == "\u{00AD}" {
-                t9String += "-"
+                t9String.append("0")
+            } else if String(charUnicode) == "-" {
+                t9String.append("1")
             }
         }
         
