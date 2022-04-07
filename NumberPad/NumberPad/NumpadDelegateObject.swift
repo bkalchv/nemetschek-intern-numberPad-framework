@@ -13,6 +13,7 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
     public enum SearchBarInputMode {
         case normal
         case multiTap
+        case t9PredictiveTexting
     }
     
     static let multitapLanguageEnglish = [
@@ -96,7 +97,9 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
     var timerInAction = false
     var wasTextPastedInSearchBar = false
     var currentMultitapLanguageDictionary: [String:String]? = nil
-    public var mode: SearchBarInputMode = SearchBarInputMode.normal
+//    public var mode: SearchBarInputMode = SearchBarInputMode.normal
+    // TODO: Bring back to normal
+    public var mode: SearchBarInputMode = SearchBarInputMode.t9PredictiveTexting
     public var multitapLanguage: MultiTapLanguageMode = MultiTapLanguageMode.english
     
     var defaultSearchBarButtonClickClosure: (() -> ())? = nil
@@ -136,7 +139,7 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
         }
         
         switch(mode) {
-            // TODO: Add mode .t9PredictiveText
+            
             case .normal:
                 if timer != nil { timer.invalidate() }
                 accumulatedText = ""
@@ -212,7 +215,37 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
 
                     return false
                 }
+        case .t9PredictiveTexting:
+            
+            if text.isEmpty { // handling deletion
+                currentNumberBeingPressed = ""
+                if !accumulatedText.isEmpty { accumulatedText.removeLast() }
+                print("After deletion: \(accumulatedText)")
+                return true
+            } else {
+                               
+                // from here on - accumulatedText will only contain
+                // the same numbers as string
+
+                accumulatedText += text
+                print(accumulatedText)
+                
+                let t9WordSuggestions = CustomSearchBar.T9SuggestionsDataSourceEN(forT9String: accumulatedText)
+                if !t9WordSuggestions.isEmpty {
+                    searchBar.text = t9WordSuggestions.first!
+                    self.searchBar(searchBar, textDidChange: t9WordSuggestions.first!)
+                } else {
+                    return true
+                }
+            }
+            
+            return false
         }
+        
+    }
+        
+    public func setInputMode(toInputMode inputMode: SearchBarInputMode) {
+        mode = inputMode
     }
 
     public func toggleMode() {
@@ -221,6 +254,8 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
                 mode = .multiTap
             case .multiTap:
                 mode = .normal
+            case .t9PredictiveTexting:
+                print("Not implemented yet")
         }
     }
     

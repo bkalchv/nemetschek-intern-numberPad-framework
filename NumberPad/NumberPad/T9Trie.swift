@@ -7,17 +7,17 @@
 
 import Foundation
 
-class T9Trie : Codable {
+public class T9Trie : Codable {
     
     static let T9TRIE_ROOT_VALUE: String = ""
     
     private let root: T9TrieNode
     
-    init() {
+    public init() {
         root = T9TrieNode(value: T9Trie.T9TRIE_ROOT_VALUE)!
     }
     
-    private func determineKeyPressed(forCharacter char: Character) -> Character? {
+    private static func determineKeyPressed(forCharacter char: Character) -> Character? {
         if char == "A" || char == "B" || char == "C" { return "2" }
         if char == "D" || char == "E" || char == "F" { return "3" }
         if char == "G" || char == "H" || char == "I" { return "4" }
@@ -39,12 +39,12 @@ class T9Trie : Codable {
         return nil
     }
 
-    private func t9String(fromString string: String) -> String? {
+    func t9String(fromString string: String) -> String? {
         
         var t9String: String = ""
         
         for currentCharacter in string.uppercased() {
-            if let keyPressed = determineKeyPressed(forCharacter: currentCharacter) {
+            if let keyPressed = T9Trie.determineKeyPressed(forCharacter: currentCharacter) {
                 t9String.append(keyPressed)
             } else {
                 return nil
@@ -54,7 +54,7 @@ class T9Trie : Codable {
         return t9String
     }
         
-    func insertWord(word: String) {
+    public func insertWord(word: String) {
         
         guard !word.isEmpty else { return }
         
@@ -80,7 +80,7 @@ class T9Trie : Codable {
         }
     }
     
-    func insertWord(word: String, withFrequenceOfUsage frequenceOfUsage: UInt) {
+    public func insertWord(word: String, withFrequenceOfUsage frequenceOfUsage: UInt) {
         guard !word.isEmpty else { return }
         
         var currentNode = root
@@ -141,7 +141,7 @@ class T9Trie : Codable {
         return true
     }
     
-    func wordSuggestions(forT9String t9String: String) ->[T9TrieWord]? {
+    public func wordSuggestions(forT9String t9String: String) ->[T9TrieWord]? {
         
         var currentNode = root
 
@@ -156,5 +156,35 @@ class T9Trie : Codable {
         if !currentNode.isEndOfWord { return nil }
         
         return currentNode.suggestedT9Words
+    }
+    
+    public func wordSuggestionsAsStrings(forT9String t9String: String) -> [String] {
+        var wordSuggestionsAsStrings: [String] = [String]()
+        if let wordSuggestions = wordSuggestions(forT9String: t9String) {
+            wordSuggestionsAsStrings = wordSuggestions.map{ $0.value.uppercased() }
+        }
+        return wordSuggestionsAsStrings
+    }
+    
+    public func isEmpty() -> Bool {
+        return root.children.isEmpty
+    }
+    
+    public static func t9Stringify(text: String) -> String {
+        
+        var t9String: String = ""
+        
+        let letters = CharacterSet.letters
+        let digits = CharacterSet.decimalDigits
+        
+        for charUnicode in text.unicodeScalars {
+            if letters.contains(charUnicode), let keyBeingPressedForLetter = determineKeyPressed(forCharacter: Character(charUnicode)) {
+                t9String.append(keyBeingPressedForLetter)
+            } else if digits.contains(charUnicode) {
+                t9String.append(String(charUnicode))
+            }
+        }
+        
+        return t9String
     }
 }

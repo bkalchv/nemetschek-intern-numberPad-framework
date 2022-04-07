@@ -7,12 +7,12 @@
 
 import Foundation
 
-class T9TrieWord: Equatable, CustomStringConvertible, Codable {
+public class T9TrieWord: Equatable, CustomStringConvertible, Codable {
     
     var value: String
     var frequenceOfUsage: UInt
     
-    init(withValue value: String, withFrequenceOfUsage frequence: UInt = 1) {
+    public init(withValue value: String, withFrequenceOfUsage frequence: UInt = 0) {
         self.value = value
         self.frequenceOfUsage = frequence
     }
@@ -34,11 +34,11 @@ class T9TrieWord: Equatable, CustomStringConvertible, Codable {
         try container.encode(self.frequenceOfUsage, forKey: CodingKeys.frequenceOfUsage)
     }
     
-    var description: String {
+    public var description: String {
         return "[\(value)] : \(frequenceOfUsage)"
     }
     
-    static func == (lhs: T9TrieWord, rhs: T9TrieWord) -> Bool {
+    public static func == (lhs: T9TrieWord, rhs: T9TrieWord) -> Bool {
         return lhs.value == rhs.value
     }
 }

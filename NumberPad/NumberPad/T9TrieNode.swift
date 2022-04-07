@@ -76,12 +76,14 @@ class T9TrieNode : Codable {
     func increaseFrequenceOfUsageOfT9Word(ofT9Word word: T9TrieWord) {
         if let suggestedWord = suggestedT9Words.first(where: {$0.value == word.value}) {
             suggestedWord.frequenceOfUsage += 1
+            suggestedT9Words.sort(by: {$0.frequenceOfUsage > $1.frequenceOfUsage})
         }
     }
     
     func setFrequenceOfUsageOfWord(ofWord word: T9TrieWord, frequenceOfUsage: UInt) {
         if let suggestedWord = suggestedT9Words.first(where: {$0.value == word.value}) {
             suggestedWord.frequenceOfUsage = frequenceOfUsage
+            suggestedT9Words.sort(by: {$0.frequenceOfUsage > $1.frequenceOfUsage})
         }
     }
     

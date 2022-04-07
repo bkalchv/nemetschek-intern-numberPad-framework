@@ -10,6 +10,13 @@
 		4259010827FC368100DC8B26 /* T9TrieNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4259010527FC368000DC8B26 /* T9TrieNode.swift */; };
 		4259010927FC368100DC8B26 /* T9Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4259010627FC368000DC8B26 /* T9Trie.swift */; };
 		4259010A27FC368100DC8B26 /* T9TrieWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4259010727FC368100DC8B26 /* T9TrieWord.swift */; };
+		4259010E27FC38C000DC8B26 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4259010D27FC38C000DC8B26 /* Language.swift */; };
+		4259011027FC691200DC8B26 /* MultitapLanguageMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C4741627E0D95200889320 /* MultitapLanguageMode.swift */; };
+		4259011127FC691B00DC8B26 /* MultitapLanguageMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C4741627E0D95200889320 /* MultitapLanguageMode.swift */; };
+		4259011227FC691D00DC8B26 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4259010D27FC38C000DC8B26 /* Language.swift */; };
+		4259011327FC692200DC8B26 /* T9Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4259010627FC368000DC8B26 /* T9Trie.swift */; };
+		4259011427FC692400DC8B26 /* T9TrieWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4259010727FC368100DC8B26 /* T9TrieWord.swift */; };
+		4259011527FC692700DC8B26 /* T9TrieNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4259010527FC368000DC8B26 /* T9TrieNode.swift */; };
 		42BE341F27C3DC67003A07EF /* NumberPad.docc in Sources */ = {isa = PBXBuildFile; fileRef = 42BE341E27C3DC67003A07EF /* NumberPad.docc */; };
 		42BE342527C3DC67003A07EF /* NumberPad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42BE341A27C3DC67003A07EF /* NumberPad.framework */; };
 		42BE342A27C3DC67003A07EF /* NumberPadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BE342927C3DC67003A07EF /* NumberPadTests.swift */; };
@@ -23,7 +30,6 @@
 		42C0A97427C5336500D6902D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C0A96227C5160500D6902D /* ViewController.swift */; };
 		42C0F9B727CE7505009B4B68 /* NumpadDelegateObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C0F9B627CE7505009B4B68 /* NumpadDelegateObject.swift */; };
 		42C0F9B827CE7505009B4B68 /* NumpadDelegateObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C0F9B627CE7505009B4B68 /* NumpadDelegateObject.swift */; };
-		42C4741727E0D95200889320 /* MultitapLanguageMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C4741627E0D95200889320 /* MultitapLanguageMode.swift */; };
 		42CF2A1A27C7D8A200050515 /* NumPadKeyPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF2A1927C7D8A200050515 /* NumPadKeyPress.swift */; };
 		42CF2A1B27C7EA6300050515 /* NumPadKeyPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF2A1927C7D8A200050515 /* NumPadKeyPress.swift */; };
 		42D16DA827CFB1AD00913280 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D16DA727CFB1AD00913280 /* CustomSearchBar.swift */; };
@@ -44,6 +50,7 @@
 		4259010527FC368000DC8B26 /* T9TrieNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T9TrieNode.swift; sourceTree = "<group>"; };
 		4259010627FC368000DC8B26 /* T9Trie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T9Trie.swift; sourceTree = "<group>"; };
 		4259010727FC368100DC8B26 /* T9TrieWord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T9TrieWord.swift; sourceTree = "<group>"; };
+		4259010D27FC38C000DC8B26 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		42BE341A27C3DC67003A07EF /* NumberPad.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NumberPad.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42BE341D27C3DC67003A07EF /* NumberPad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NumberPad.h; sourceTree = "<group>"; };
 		42BE341E27C3DC67003A07EF /* NumberPad.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = NumberPad.docc; sourceTree = "<group>"; };
@@ -114,6 +121,7 @@
 			children = (
 				42BE341D27C3DC67003A07EF /* NumberPad.h */,
 				42C4741627E0D95200889320 /* MultitapLanguageMode.swift */,
+				4259010D27FC38C000DC8B26 /* Language.swift */,
 				42CF2A1927C7D8A200050515 /* NumPadKeyPress.swift */,
 				42C0F9B627CE7505009B4B68 /* NumpadDelegateObject.swift */,
 				42D16DA727CFB1AD00913280 /* CustomSearchBar.swift */,
@@ -288,9 +296,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				4259010927FC368100DC8B26 /* T9Trie.swift in Sources */,
+				4259010E27FC38C000DC8B26 /* Language.swift in Sources */,
+				4259011027FC691200DC8B26 /* MultitapLanguageMode.swift in Sources */,
 				42C0F9B727CE7505009B4B68 /* NumpadDelegateObject.swift in Sources */,
 				42C0A97427C5336500D6902D /* ViewController.swift in Sources */,
-				42C4741727E0D95200889320 /* MultitapLanguageMode.swift in Sources */,
 				42D16DA827CFB1AD00913280 /* CustomSearchBar.swift in Sources */,
 				4259010A27FC368100DC8B26 /* T9TrieWord.swift in Sources */,
 				42BE341F27C3DC67003A07EF /* NumberPad.docc in Sources */,
@@ -313,8 +322,13 @@
 			files = (
 				42FB7C8827D6329900F8A7DB /* CustomSearchBar.swift in Sources */,
 				42C0A96327C5160500D6902D /* ViewController.swift in Sources */,
+				4259011527FC692700DC8B26 /* T9TrieNode.swift in Sources */,
+				4259011427FC692400DC8B26 /* T9TrieWord.swift in Sources */,
 				42C0F9B827CE7505009B4B68 /* NumpadDelegateObject.swift in Sources */,
+				4259011127FC691B00DC8B26 /* MultitapLanguageMode.swift in Sources */,
 				42CF2A1B27C7EA6300050515 /* NumPadKeyPress.swift in Sources */,
+				4259011227FC691D00DC8B26 /* Language.swift in Sources */,
+				4259011327FC692200DC8B26 /* T9Trie.swift in Sources */,
 				42C0A95F27C5160500D6902D /* AppDelegate.swift in Sources */,
 				42C0A96127C5160500D6902D /* SceneDelegate.swift in Sources */,
 			);
