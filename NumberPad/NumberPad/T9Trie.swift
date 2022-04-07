@@ -18,6 +18,8 @@ public class T9Trie : Codable {
     }
     
     private static func determineKeyPressed(forCharacter char: Character) -> Character? {
+        if char == " " { return "0" }
+        if char == "-" { return "1" }
         if char == "A" || char == "B" || char == "C" { return "2" }
         if char == "D" || char == "E" || char == "F" { return "3" }
         if char == "G" || char == "H" || char == "I" { return "4" }
@@ -176,12 +178,17 @@ public class T9Trie : Codable {
         
         let letters = CharacterSet.letters
         let digits = CharacterSet.decimalDigits
+        let whitespaces = CharacterSet.whitespaces
         
         for charUnicode in text.unicodeScalars {
             if letters.contains(charUnicode), let keyBeingPressedForLetter = determineKeyPressed(forCharacter: Character(charUnicode)) {
                 t9String.append(keyBeingPressedForLetter)
             } else if digits.contains(charUnicode) {
                 t9String.append(String(charUnicode))
+            } else if whitespaces.contains(charUnicode) {
+                t9String += " "
+            } else if charUnicode == "\u{00AD}" {
+                t9String += "-"
             }
         }
         

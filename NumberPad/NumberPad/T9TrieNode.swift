@@ -16,7 +16,7 @@ extension CharacterSet {
 
 class T9TrieNode : Codable {
     
-    static private var allowedCharactersString = "23456789#"
+    static private var allowedCharactersString = "0123456789"
     static private var allowedCharactersSet = CharacterSet.init(charactersIn: allowedCharactersString)
     
     var value: String

@@ -223,10 +223,7 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
                 print("After deletion: \(accumulatedText)")
                 return true
             } else {
-                               
-                // from here on - accumulatedText will only contain
-                // the same numbers as string
-
+                                            
                 accumulatedText += text
                 print(accumulatedText)
                 

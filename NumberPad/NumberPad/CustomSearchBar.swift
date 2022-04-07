@@ -29,7 +29,7 @@ public class CustomSearchBar : UISearchBar {
         }
         if CustomSearchBar.T9TrieBG == nil {
             CustomSearchBar.T9TrieBG = decodeTrie(trieFilename: "T9Trie_BG")
-//            
+//            TODO: insert Bulgarian Weighted Words
 //                if let weightedWords = UserDefaults.standard.object(forKey: "weighted_words_EN") as? [String : UInt] {
 //                    weightedWords.forEach { (word, weight) in
 //                        CustomSearchBar.T9TrieEN.insertWord(word: word, withFrequenceOfUsage: weight)
@@ -87,11 +87,19 @@ public class CustomSearchBar : UISearchBar {
     public static func preloadWords(forLanguage language: Language, withWords words: [String]) {
         switch language {
         case .EN:
+            if T9TrieEN == nil {
+                T9TrieEN = T9Trie()
+            }
+            
             for word in words {
                 T9TrieEN.insertWord(word: word)
             }
-            
+                
         case .BG:
+            if T9TrieBG == nil {
+                T9TrieBG = T9Trie()
+            }
+            
             for word in words {
                 T9TrieBG.insertWord(word: word)
             }
@@ -119,12 +127,6 @@ public class CustomSearchBar : UISearchBar {
         self.customDelegate.setInputMode(toInputMode: inputMode)
         self.updateKeyboardType()
     }
-    
-    //TODO: Maybe redundant
-//    public func toggleInputMode() {
-//        self.customDelegate.toggleMode()
-//        self.updateKeyboardType()
-//    }
     
     public func toggleMultitapLanguage() {
         self.customDelegate.toggleMultitapLanguage()
