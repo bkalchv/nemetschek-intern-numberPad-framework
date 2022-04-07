@@ -14,6 +14,8 @@ public class CustomSearchBar : UISearchBar {
     private static var T9TrieEN: T9Trie!
     private static var T9TrieBG: T9Trie!
     
+    private var currentT9TrieInUse: T9Trie!
+    
     public override func awakeFromNib() {
         customDelegate = NumpadDelegateObject(withMultitapLanguageDictionary: NumpadDelegateObject.multitapLanguageEnglish)
         self.delegate = customDelegate
@@ -21,23 +23,58 @@ public class CustomSearchBar : UISearchBar {
         if CustomSearchBar.T9TrieEN == nil {
             CustomSearchBar.T9TrieEN = decodeTrie(trieFilename: "T9Trie_EN")
         
-            if let weightedWords = UserDefaults.standard.object(forKey: "weighted_words_EN") as? [String : UInt] {
-                weightedWords.forEach { (word, weight) in
+            if let weightedWordsEN = UserDefaults.standard.object(forKey: "weighted_words_EN") as? [String : UInt] {
+                weightedWordsEN.forEach { (word, weight) in
                     CustomSearchBar.T9TrieEN.insertWord(word: word, withFrequenceOfUsage: weight)
                 }
             }
         }
+        
         if CustomSearchBar.T9TrieBG == nil {
             CustomSearchBar.T9TrieBG = decodeTrie(trieFilename: "T9Trie_BG")
 //            TODO: insert Bulgarian Weighted Words
-//                if let weightedWords = UserDefaults.standard.object(forKey: "weighted_words_EN") as? [String : UInt] {
-//                    weightedWords.forEach { (word, weight) in
-//                        CustomSearchBar.T9TrieEN.insertWord(word: word, withFrequenceOfUsage: weight)
-//                    }
-//                }
+                if let weightedWordsBG = UserDefaults.standard.object(forKey: "weighted_words_BG") as? [String : UInt] {
+                    weightedWordsBG.forEach { (word, weight) in
+                        CustomSearchBar.T9TrieBG.insertWord(word: word, withFrequenceOfUsage: weight)
+                    }
+                }
         }
         
+        self.currentT9TrieInUse = CustomSearchBar.T9TrieEN
+        
         //print("CustomSearchBar initialized")
+    }
+    
+    private static func isWordPresentInWeightedWordsBG(forWord word: String) -> Bool {
+        if let weightedWords = UserDefaults.standard.object(forKey: "weighted_words_BG") as? [String : UInt] {
+            return weightedWords.contains(where: {$0.key == word})
+        }
+        return false
+    }
+    
+    private static func increaseWeightOfWordInWeightedWordsBG(forWord word: String) {
+        if let weightedWords = UserDefaults.standard.object(forKey: "weighted_words_BG") as? [String : UInt] {
+            let currentWeightForWord = weightedWords[word]
+            
+            var weightedWordsTemp = weightedWords
+            
+            weightedWordsTemp[word] = currentWeightForWord! + 1
+            
+            UserDefaults.standard.set(weightedWordsTemp, forKey: "weighted_words_BG")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+
+    private static func addNewWordInWeightedWordsBG(word: String) {
+        if let weightedWords = UserDefaults.standard.object(forKey: "weighted_words_BG") as? [String : UInt] {
+                        
+            var weightedWordsTemp = weightedWords
+            
+            weightedWordsTemp[word] = 1
+            
+            UserDefaults.standard.set(weightedWordsTemp, forKey: "weighted_words_BG")
+        }
     }
     
     private static func isWordPresentInWeightedWordsEN(forWord word: String) -> Bool {
@@ -84,7 +121,7 @@ public class CustomSearchBar : UISearchBar {
         }
     }
     
-    public static func preloadWords(forLanguage language: Language, withWords words: [String]) {
+    public static func preloadWords(forLanguage language: T9TrieLanguage, withWords words: [String]) {
         switch language {
         case .EN:
             if T9TrieEN == nil {
@@ -112,6 +149,10 @@ public class CustomSearchBar : UISearchBar {
         return CustomSearchBar.T9TrieEN.wordSuggestionsAsStrings(forT9String: t9String)
     }
     
+    public static func T9SuggestionsDataSourceBG(forT9String t9String: String) -> [String] {
+        return CustomSearchBar.T9TrieBG.wordSuggestionsAsStrings(forT9String: t9String)
+    }
+    
     private func updateKeyboardType() {
         switch self.customDelegate.mode {
         case .normal:
@@ -131,6 +172,20 @@ public class CustomSearchBar : UISearchBar {
     public func toggleMultitapLanguage() {
         self.customDelegate.toggleMultitapLanguage()
         self.customDelegate.updateMultitapLanguage()
+    }
+    
+    public func updateCurrentT9TrieInUse() {
+        switch self.customDelegate.t9TrieLanguage {
+        case .EN:
+            currentT9TrieInUse = CustomSearchBar.T9TrieEN
+        case .BG:
+            currentT9TrieInUse = CustomSearchBar.T9TrieBG
+        }
+    }
+    
+    public func toggleT9TrieLanguage() {
+        self.customDelegate.toggleT9TrieLanguage()
+        self.updateCurrentT9TrieInUse()
     }
     
     public func setDefaultSearchButtonClickedClosure(closure: @escaping () -> Void) {

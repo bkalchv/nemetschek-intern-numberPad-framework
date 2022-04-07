@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum Language {
+public enum T9TrieLanguage {
     case EN
     case BG
 }

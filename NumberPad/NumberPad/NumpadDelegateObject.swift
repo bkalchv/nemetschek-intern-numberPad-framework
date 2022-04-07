@@ -99,6 +99,7 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
     var currentMultitapLanguageDictionary: [String:String]? = nil
     public var mode: SearchBarInputMode = SearchBarInputMode.normal
     public var multitapLanguage: MultiTapLanguageMode = MultiTapLanguageMode.english
+    public var t9TrieLanguage: T9TrieLanguage = T9TrieLanguage.EN
     
     var defaultSearchBarButtonClickClosure: (() -> ())? = nil
     var defaultSearchBarTextDidChangeClosure: ((_ searchText: String) -> ())? = nil
@@ -243,23 +244,21 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
         mode = inputMode
     }
 
-    public func toggleMode() {
-        switch mode {
-            case .normal:
-                mode = .multiTap
-            case .multiTap:
-                mode = .normal
-            case .t9PredictiveTexting:
-                print("Not implemented yet")
-        }
-    }
-    
     public func toggleMultitapLanguage() {
         switch multitapLanguage {
             case .english:
                 multitapLanguage = .bulgarian
             case .bulgarian:
                 multitapLanguage = .english
+        }
+    }
+    
+    public func toggleT9TrieLanguage() {
+        switch t9TrieLanguage {
+        case .EN:
+            t9TrieLanguage = .BG
+        case .BG:
+            t9TrieLanguage = .EN
         }
     }
     
