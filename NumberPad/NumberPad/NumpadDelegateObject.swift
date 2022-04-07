@@ -99,7 +99,6 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
     var currentMultitapLanguageDictionary: [String:String]? = nil
     public var mode: SearchBarInputMode = SearchBarInputMode.normal
     public var multitapLanguage: MultiTapLanguageMode = MultiTapLanguageMode.english
-    public var t9TrieLanguage: T9TrieLanguage = T9TrieLanguage.EN
     
     var defaultSearchBarButtonClickClosure: (() -> ())? = nil
     var defaultSearchBarTextDidChangeClosure: ((_ searchText: String) -> ())? = nil
@@ -118,6 +117,11 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
     }
     
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if searchText == "" {
+            self.accumulatedText = ""
+        }
+        
         self.textInTextField = searchText
         
         if self.wasTextPastedInSearchBar {
@@ -128,6 +132,8 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
         
         self.defaultSearchBarTextDidChangeClosure?(searchText)
     }
+    
+    
     
     public func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
     
@@ -226,7 +232,7 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
                 accumulatedText += text
                 print(accumulatedText)
                 
-                let t9WordSuggestions = CustomSearchBar.T9SuggestionsDataSourceEN(forT9String: accumulatedText)
+                let t9WordSuggestions = CustomSearchBar.T9SuggestionsDataSource(forT9String: accumulatedText)
                 if !t9WordSuggestions.isEmpty {
                     searchBar.text = t9WordSuggestions.first!
                     self.searchBar(searchBar, textDidChange: t9WordSuggestions.first!)
@@ -252,16 +258,7 @@ public class NumpadDelegateObject : NSObject, UISearchBarDelegate {
                 multitapLanguage = .english
         }
     }
-    
-    public func toggleT9TrieLanguage() {
-        switch t9TrieLanguage {
-        case .EN:
-            t9TrieLanguage = .BG
-        case .BG:
-            t9TrieLanguage = .EN
-        }
-    }
-    
+
     public func updateMultitapLanguage() {
         switch self.multitapLanguage {
         case .english:
