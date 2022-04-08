@@ -195,4 +195,38 @@ public class T9Trie : Codable {
         
         return t9String
     }
+    
+    func doesTrieExist(t9TrieFilename: String) -> Bool {
+        let fileManager = FileManager.default
+        let urls = fileManager.urls(for: .cachesDirectory, in: .userDomainMask)
+        let cachesDirectoryUrl = urls[0]
+        
+        // TODO: decide what extension
+        let fileUrl = cachesDirectoryUrl.appendingPathComponent(t9TrieFilename)
+                
+        let filePath = fileUrl.path
+        
+        return fileManager.fileExists(atPath: filePath)
+    }
+    
+    func encodeAndCacheTrie(t9TrieFilename: String) {
+        if !doesTrieExist(t9TrieFilename: t9TrieFilename) {
+            let fileManager = FileManager.default
+            let urls = fileManager.urls(for: .cachesDirectory, in: .userDomainMask)
+            let cachesDirectoryUrl = urls[0]
+            // TODO: decide what extension
+            let fileUrl = cachesDirectoryUrl.appendingPathComponent(t9TrieFilename)
+            let filePath = fileUrl.path
+            
+            let encoder = JSONEncoder()
+            
+            do {
+                let data = try encoder.encode(self)
+                try data.write(to: fileUrl)
+                print("File \(filePath) created")
+            } catch {
+                print(error)
+            }
+        }
+    }
 }

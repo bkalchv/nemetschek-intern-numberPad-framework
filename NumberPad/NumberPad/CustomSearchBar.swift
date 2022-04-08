@@ -8,19 +8,22 @@
 import Foundation
 import UIKit
 
+public let T9_TRIE_EN_FILENAME = "T9Trie_EN"
+public let T9_TRIE_BG_FILENAME = "T9Trie_BG"
+
 public class CustomSearchBar : UISearchBar {
     private var customDelegate: NumpadDelegateObject!
     
     private static var T9TrieEN: T9Trie!
     private static var T9TrieBG: T9Trie!
-    private static var currentT9TrieLanguage: T9TrieLanguage! = .EN
+    private static var currentT9TrieLanguage: T9TrieLanguage = .EN
     
     public override func awakeFromNib() {
         customDelegate = NumpadDelegateObject(withMultitapLanguageDictionary: NumpadDelegateObject.multitapLanguageEnglish)
         self.delegate = customDelegate
         
         if CustomSearchBar.T9TrieEN == nil {
-            CustomSearchBar.T9TrieEN = decodeTrie(trieFilename: "T9Trie_EN")
+            CustomSearchBar.T9TrieEN = decodeTrie(trieFilename: T9_TRIE_EN_FILENAME)
         
             if let weightedWordsEN = UserDefaults.standard.object(forKey: "weighted_words_EN") as? [String : UInt] {
                 weightedWordsEN.forEach { (word, weight) in
@@ -30,17 +33,14 @@ public class CustomSearchBar : UISearchBar {
         }
         
         if CustomSearchBar.T9TrieBG == nil {
-            CustomSearchBar.T9TrieBG = decodeTrie(trieFilename: "T9Trie_BG")
+            CustomSearchBar.T9TrieBG = decodeTrie(trieFilename: T9_TRIE_BG_FILENAME)
                 if let weightedWordsBG = UserDefaults.standard.object(forKey: "weighted_words_BG") as? [String : UInt] {
                     weightedWordsBG.forEach { (word, weight) in
                         CustomSearchBar.T9TrieBG.insertWord(word: word, withFrequenceOfUsage: weight)
                     }
                 }
         }
-        
-        if CustomSearchBar.currentT9TrieLanguage == nil {
-            CustomSearchBar.currentT9TrieLanguage = T9TrieLanguage.EN
-        }
+    
     }
     
     private static func isWordPresentInWeightedWordsBG(forWord word: String) -> Bool {
@@ -72,6 +72,7 @@ public class CustomSearchBar : UISearchBar {
             weightedWordsTemp[word] = 1
             
             UserDefaults.standard.set(weightedWordsTemp, forKey: "weighted_words_BG")
+            UserDefaults.standard.synchronize()
         }
     }
     
@@ -103,10 +104,11 @@ public class CustomSearchBar : UISearchBar {
             weightedWordsTemp[word] = 1
             
             UserDefaults.standard.set(weightedWordsTemp, forKey: "weighted_words_EN")
+            UserDefaults.standard.synchronize()
         }
     }
     
-    public static func currentT9Language() -> T9TrieLanguage {
+    public static func getCurrentT9TrieLanguage() -> T9TrieLanguage {
         return CustomSearchBar.currentT9TrieLanguage
     }
     
@@ -133,8 +135,6 @@ public class CustomSearchBar : UISearchBar {
             if let weightedWords = UserDefaults.standard.object(forKey: "weighted_words_BG") as? [String : UInt], let frequenceOfUsage = weightedWords[word] {
                 CustomSearchBar.T9TrieBG.insertWord(word: word, withFrequenceOfUsage: frequenceOfUsage)
             }
-        case .none:
-            print("updateWeight(forWord word: String): switch .none case not handled.")
         }
     }
     
@@ -148,6 +148,8 @@ public class CustomSearchBar : UISearchBar {
             for word in words {
                 T9TrieEN.insertWord(word: word)
             }
+            
+            T9TrieEN.encodeAndCacheTrie(t9TrieFilename: T9_TRIE_EN_FILENAME)
                 
         case .BG:
             if T9TrieBG == nil {
@@ -157,6 +159,8 @@ public class CustomSearchBar : UISearchBar {
             for word in words {
                 T9TrieBG.insertWord(word: word)
             }
+            
+            T9TrieBG.encodeAndCacheTrie(t9TrieFilename: T9_TRIE_BG_FILENAME)
         }
     }
     
@@ -166,12 +170,7 @@ public class CustomSearchBar : UISearchBar {
             return CustomSearchBar.T9SuggestionsDataSourceEN(forT9String: t9String)
         case .BG:
             return CustomSearchBar.T9SuggestionsDataSourceBG(forT9String: t9String)
-        case .none:
-            print("T9SuggestionsDataSource(): switch .none case not handled.")
         }
-        
-        print("T9SuggestionsDataSource(): returning an empty string Array!.")
-        return [String]()
     }
     
     public static func T9SuggestionsDataSourceEN(forT9String t9String: String) -> [String] {
@@ -209,8 +208,6 @@ public class CustomSearchBar : UISearchBar {
             CustomSearchBar.currentT9TrieLanguage = .BG
         case .BG:
             CustomSearchBar.currentT9TrieLanguage = .EN
-        case .none:
-            print("ToggleCurrentT9TrieLanguage: Unhandled!")
         }
     }
     
