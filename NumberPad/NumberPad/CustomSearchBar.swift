@@ -15,8 +15,6 @@ public class CustomSearchBar : UISearchBar {
     private static var T9TrieBG: T9Trie!
     private static var currentT9TrieLanguage: T9TrieLanguage! = .EN
     
-    //private var currentT9TrieInUse: T9Trie!
-    
     public override func awakeFromNib() {
         customDelegate = NumpadDelegateObject(withMultitapLanguageDictionary: NumpadDelegateObject.multitapLanguageEnglish)
         self.delegate = customDelegate
@@ -33,7 +31,6 @@ public class CustomSearchBar : UISearchBar {
         
         if CustomSearchBar.T9TrieBG == nil {
             CustomSearchBar.T9TrieBG = decodeTrie(trieFilename: "T9Trie_BG")
-//            TODO: insert Bulgarian Weighted Words
                 if let weightedWordsBG = UserDefaults.standard.object(forKey: "weighted_words_BG") as? [String : UInt] {
                     weightedWordsBG.forEach { (word, weight) in
                         CustomSearchBar.T9TrieBG.insertWord(word: word, withFrequenceOfUsage: weight)
@@ -44,8 +41,6 @@ public class CustomSearchBar : UISearchBar {
         if CustomSearchBar.currentT9TrieLanguage == nil {
             CustomSearchBar.currentT9TrieLanguage = T9TrieLanguage.EN
         }
-        
-        //print("CustomSearchBar initialized")
     }
     
     private static func isWordPresentInWeightedWordsBG(forWord word: String) -> Bool {
@@ -111,6 +106,10 @@ public class CustomSearchBar : UISearchBar {
         }
     }
     
+    public static func currentT9Language() -> T9TrieLanguage {
+        return CustomSearchBar.currentT9TrieLanguage
+    }
+    
     public static func updateWeight(forWord word: String) {
         
         switch CustomSearchBar.currentT9TrieLanguage {
@@ -137,7 +136,6 @@ public class CustomSearchBar : UISearchBar {
         case .none:
             print("updateWeight(forWord word: String): switch .none case not handled.")
         }
-        
     }
     
     public static func preloadWords(forLanguage language: T9TrieLanguage, withWords words: [String]) {
