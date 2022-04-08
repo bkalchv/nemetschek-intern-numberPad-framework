@@ -204,7 +204,7 @@ public class CustomSearchBar : UISearchBar {
         self.customDelegate.toggleMultitapLanguage()
         self.customDelegate.updateMultitapLanguage()
     }
-    
+
     public static func toggleCurrentT9TrieLanguage() {
         switch CustomSearchBar.currentT9TrieLanguage {
         case .EN:
@@ -215,7 +215,10 @@ public class CustomSearchBar : UISearchBar {
             print("ToggleCurrentT9TrieLanguage: Unhandled!")
         }
     }
-
+    
+    public static func changeCurrentT9TrieLanguage(to t9TrieLanguage: T9TrieLanguage) {
+        CustomSearchBar.currentT9TrieLanguage = t9TrieLanguage
+    }
     
     public func setDefaultSearchButtonClickedClosure(closure: @escaping () -> Void) {
         if self.customDelegate.defaultSearchBarButtonClickClosure == nil {
