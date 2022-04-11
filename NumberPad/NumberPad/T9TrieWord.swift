@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class T9TrieWord: Equatable, CustomStringConvertible, Codable {
+internal class T9TrieWord: Equatable, CustomStringConvertible, Codable {
     
     var value: String
     var frequenceOfUsage: UInt

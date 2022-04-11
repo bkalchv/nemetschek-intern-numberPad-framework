@@ -240,7 +240,6 @@ public class CustomSearchBar : UISearchBar {
         let cachesDirectoryUrl = urls[0]
 
         let fileUrl = cachesDirectoryUrl.appendingPathComponent(trieFilename)
-        //print(fileUrl.absoluteString)
 
         let filePath = fileUrl.path
 
@@ -259,4 +258,53 @@ public class CustomSearchBar : UISearchBar {
 
         return result
     }
+    
+    public static func determineKeyPressed(forCharacter char: Character) -> Character? {
+        if char == " " { return "0" }
+        if char == "-" { return "1" }
+        
+        if char == "A" || char == "B" || char == "C" { return "2" }
+        if char == "D" || char == "E" || char == "F" { return "3" }
+        if char == "G" || char == "H" || char == "I" { return "4" }
+        if char == "J" || char == "K" || char == "L" { return "5" }
+        if char == "M" || char == "N" || char == "O" { return "6" }
+        if char == "P" || char == "Q" || char == "R" || char == "S" { return "7" }
+        if char == "T" || char == "U" || char == "V" { return "8" }
+        if char == "W" || char == "X" || char == "Y" || char == "Z" { return "9" }
+        
+        if char == "А" || char == "Б" || char == "В" || char == "Г" { return "2" }
+        if char == "Д" || char == "Е" || char == "Ж" || char == "З" { return "3" }
+        if char == "И" || char == "Й" || char == "К" || char == "Л" { return "4" }
+        if char == "М" || char == "Н" || char == "О" || char == "П" { return "5" }
+        if char == "Р" || char == "С" || char == "Т" || char == "У" { return "6" }
+        if char == "Ф" || char == "Х" || char == "Ц" || char == "Ч" { return "7" }
+        if char == "Ш" || char == "Щ" || char == "Ъ" || char == "ь" { return "8" }
+        if char == "Ь" || char == "Э" || char == "Ю" || char == "Я" { return "9" }
+        
+        return nil
+    }
+    
+    public static func t9Stringify(text: String) -> String {
+        
+        var t9String: String = ""
+        
+        let letters = CharacterSet.letters
+        let digits = CharacterSet.decimalDigits
+        let whitespaces = CharacterSet.whitespaces
+        
+        for charUnicode in text.unicodeScalars {
+            if letters.contains(charUnicode), let keyBeingPressedForLetter = CustomSearchBar.determineKeyPressed(forCharacter: Character(charUnicode)) {
+                t9String.append(keyBeingPressedForLetter)
+            } else if digits.contains(charUnicode) {
+                t9String.append(String(charUnicode))
+            } else if whitespaces.contains(charUnicode) {
+                t9String.append("0")
+            } else if String(charUnicode) == "-" {
+                t9String.append("1")
+            }
+        }
+        
+        return t9String
+    }
+    
 }
